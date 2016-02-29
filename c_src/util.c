@@ -17,13 +17,13 @@ make_atom(ErlNifEnv* env, const char* name)
 ERL_NIF_TERM
 make_ok(jiffy_st* st, ErlNifEnv* env, ERL_NIF_TERM value)
 {
-    return enif_make_tuple2(env, st->atom_ok, value);
+    return enif_make_tuple2(env, atom_ok, value);
 }
 
 ERL_NIF_TERM
 make_error(jiffy_st* st, ErlNifEnv* env, const char* error)
 {
-    return enif_make_tuple2(env, st->atom_error, make_atom(env, error));
+    return enif_make_tuple2(env, atom_error, make_atom(env, error));
 }
 
 ERL_NIF_TERM
@@ -31,13 +31,12 @@ make_obj_error(jiffy_st* st, ErlNifEnv* env,
         const char* error, ERL_NIF_TERM obj)
 {
     ERL_NIF_TERM reason = enif_make_tuple2(env, make_atom(env, error), obj);
-    return enif_make_tuple2(env, st->atom_error, reason);
+    return enif_make_tuple2(env, atom_error, reason);
 }
 
 int
 get_bytes_per_iter(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
 {
-    jiffy_st* st = (jiffy_st*) enif_priv_data(env);
     const ERL_NIF_TERM* tuple;
     int arity;
     unsigned int bytes;
@@ -50,7 +49,7 @@ get_bytes_per_iter(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
         return 0;
     }
 
-    if(enif_compare(tuple[0], st->atom_bytes_per_iter) != 0) {
+    if(enif_compare(tuple[0], atom_bytes_per_iter) != 0) {
         return 0;
     }
 
@@ -67,7 +66,6 @@ get_bytes_per_iter(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
 int
 get_bytes_per_red(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
 {
-    jiffy_st* st = (jiffy_st*) enif_priv_data(env);
     const ERL_NIF_TERM* tuple;
     int arity;
     unsigned int bytes;
@@ -80,7 +78,7 @@ get_bytes_per_red(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
         return 0;
     }
 
-    if(enif_compare(tuple[0], st->atom_bytes_per_iter) != 0) {
+    if(enif_compare(tuple[0], atom_bytes_per_iter) != 0) {
         return 0;
     }
 
@@ -96,7 +94,6 @@ get_bytes_per_red(ErlNifEnv* env, ERL_NIF_TERM val, size_t* bpi)
 int
 get_null_term(ErlNifEnv* env, ERL_NIF_TERM val, ERL_NIF_TERM *null_term)
 {
-    jiffy_st* st = (jiffy_st*) enif_priv_data(env);
     const ERL_NIF_TERM* tuple;
     int arity;
 
@@ -108,7 +105,7 @@ get_null_term(ErlNifEnv* env, ERL_NIF_TERM val, ERL_NIF_TERM *null_term)
       return 0;
     }
 
-    if(enif_compare(tuple[0], st->atom_null_term) != 0) {
+    if(enif_compare(tuple[0], atom_null_term) != 0) {
       return 0;
     }
 

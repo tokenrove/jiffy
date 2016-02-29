@@ -13,32 +13,30 @@
     ((ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION >= 6) \
     || (ERL_NIF_MAJOR_VERSION > 2))
 
+
+extern ERL_NIF_TERM    atom_ok;
+extern ERL_NIF_TERM    atom_error;
+extern ERL_NIF_TERM    atom_null;
+extern ERL_NIF_TERM    atom_true;
+extern ERL_NIF_TERM    atom_false;
+extern ERL_NIF_TERM    atom_bignum;
+extern ERL_NIF_TERM    atom_bignum_e;
+extern ERL_NIF_TERM    atom_bigdbl;
+extern ERL_NIF_TERM    atom_partial;
+extern ERL_NIF_TERM    atom_uescape;
+extern ERL_NIF_TERM    atom_pretty;
+extern ERL_NIF_TERM    atom_force_utf8;
+extern ERL_NIF_TERM    atom_iter;
+extern ERL_NIF_TERM    atom_bytes_per_iter;
+extern ERL_NIF_TERM    atom_return_maps;
+extern ERL_NIF_TERM    atom_return_trailer;
+extern ERL_NIF_TERM    atom_has_trailer;
+extern ERL_NIF_TERM    atom_nil;
+extern ERL_NIF_TERM    atom_use_nil;
+extern ERL_NIF_TERM    atom_null_term;
+extern ERL_NIF_TERM    atom_escape_forward_slashes;
+
 typedef struct {
-    ERL_NIF_TERM    atom_ok;
-    ERL_NIF_TERM    atom_error;
-    ERL_NIF_TERM    atom_null;
-    ERL_NIF_TERM    atom_true;
-    ERL_NIF_TERM    atom_false;
-    ERL_NIF_TERM    atom_bignum;
-    ERL_NIF_TERM    atom_bignum_e;
-    ERL_NIF_TERM    atom_bigdbl;
-    ERL_NIF_TERM    atom_partial;
-    ERL_NIF_TERM    atom_uescape;
-    ERL_NIF_TERM    atom_pretty;
-    ERL_NIF_TERM    atom_force_utf8;
-    ERL_NIF_TERM    atom_iter;
-    ERL_NIF_TERM    atom_bytes_per_iter;
-    ERL_NIF_TERM    atom_return_maps;
-    ERL_NIF_TERM    atom_return_trailer;
-    ERL_NIF_TERM    atom_has_trailer;
-    ERL_NIF_TERM    atom_nil;
-    ERL_NIF_TERM    atom_use_nil;
-    ERL_NIF_TERM    atom_null_term;
-    ERL_NIF_TERM    atom_escape_forward_slashes;
-
-    ERL_NIF_TERM    ref_object;
-    ERL_NIF_TERM    ref_array;
-
     ErlNifResourceType* res_dec;
     ErlNifResourceType* res_enc;
 } jiffy_st;

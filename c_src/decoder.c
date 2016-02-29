@@ -82,7 +82,7 @@ dec_new(ErlNifEnv* env)
     d->is_partial = 0;
     d->return_maps = 0;
     d->return_trailer = 0;
-    d->null_term = d->atoms->atom_null;
+    d->null_term = atom_null;
 
     d->p = NULL;
     d->u = NULL;
@@ -140,7 +140,7 @@ dec_error(Decoder* d, const char* atom)
     ERL_NIF_TERM pos = enif_make_int(d->env, d->i+1);
     ERL_NIF_TERM msg = make_atom(d->env, atom);
     ERL_NIF_TERM ret = enif_make_tuple2(d->env, pos, msg);
-    return enif_make_tuple2(d->env, d->atoms->atom_error, ret);
+    return enif_make_tuple2(d->env, atom_error, ret);
 }
 
 char
@@ -367,7 +367,7 @@ parse:
 int
 dec_number(Decoder* d, ERL_NIF_TERM* value)
 {
-    ERL_NIF_TERM num_type = d->atoms->atom_error;
+    ERL_NIF_TERM num_type = atom_error;
     char state = nst_init;
     char nbuf[NUM_BUF_LEN];
     int st = d->i;
@@ -598,11 +598,11 @@ parse:
     }
 
     if(!has_frac && !has_exp) {
-        num_type = d->atoms->atom_bignum;
+        num_type = atom_bignum;
     } else if(!has_frac && has_exp) {
-        num_type = d->atoms->atom_bignum_e;
+        num_type = atom_bignum_e;
     } else {
-        num_type = d->atoms->atom_bigdbl;
+        num_type = atom_bigdbl;
     }
 
     d->is_partial = 1;
@@ -692,7 +692,7 @@ decode_init(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 
     tmp_argv[0] = argv[0];
     tmp_argv[1] = enif_make_resource(env, d);
-    tmp_argv[2] = st->atom_error;
+    tmp_argv[2] = atom_error;
     tmp_argv[3] = enif_make_list(env, 0);
     tmp_argv[4] = enif_make_list(env, 0);
 
@@ -708,16 +708,16 @@ decode_init(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
             continue;
         } else if(get_bytes_per_red(env, val, &(d->bytes_per_red))) {
             continue;
-        } else if(enif_compare(val, d->atoms->atom_return_maps) == 0) {
+        } else if(enif_compare(val, atom_return_maps) == 0) {
 #if MAP_TYPE_PRESENT
             d->return_maps = 1;
 #else
             return enif_make_badarg(env);
 #endif
-        } else if(enif_compare(val, d->atoms->atom_return_trailer) == 0) {
+        } else if(enif_compare(val, atom_return_trailer) == 0) {
             d->return_trailer = 1;
-        } else if(enif_compare(val, d->atoms->atom_use_nil) == 0) {
-            d->null_term = d->atoms->atom_nil;
+        } else if(enif_compare(val, atom_use_nil) == 0) {
+            d->null_term = atom_nil;
         } else if(get_null_term(env, val, &(d->null_term))) {
             continue;
         } else {
@@ -763,7 +763,7 @@ decode_iter(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
         if(should_yield(env, &bytes_read, d->bytes_per_red)) {
             return enif_make_tuple5(
                     env,
-                    st->atom_iter,
+                    atom_iter,
                     argv[1],
                     val,
                     objs,
@@ -804,7 +804,7 @@ decode_iter(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
                             ret = dec_error(d, "invalid_literal");
                             goto done;
                         }
-                        val = d->atoms->atom_true;
+                        val = atom_true;
                         dec_pop(d, st_value);
                         d->i += 4;
                         break;
@@ -817,7 +817,7 @@ decode_iter(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
                             ret = dec_error(d, "invalid_literal");
                             goto done;
                         }
-                        val = d->atoms->atom_false;
+                        val = atom_false;
                         dec_pop(d, st_value);
                         d->i += 5;
                         break;
@@ -1050,7 +1050,7 @@ decode_done:
 
     if(d->i < bin.size && d->return_trailer) {
         trailer = enif_make_sub_binary(env, argv[0], d->i, bin.size - d->i);
-        val = enif_make_tuple3(env, d->atoms->atom_has_trailer, val, trailer);
+        val = enif_make_tuple3(env, atom_has_trailer, val, trailer);
     } else if(d->i < bin.size) {
         ret = dec_error(d, "invalid_trailing_data");
         goto done;
@@ -1059,7 +1059,7 @@ decode_done:
     if(dec_curr(d) != st_done) {
         ret = dec_error(d, "truncated_json");
     } else if(d->is_partial) {
-        ret = enif_make_tuple2(env, d->atoms->atom_partial, val);
+        ret = enif_make_tuple2(env, atom_partial, val);
     } else {
         ret = val;
     }
