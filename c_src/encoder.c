@@ -11,18 +11,6 @@
 #include <stdint.h>
 /* #include "enif_interceptor.h" */
 
-#include <x86intrin.h>
-#define enif_realloc_binary(a, b)                                       \
-  ({ uint64_t t0 = __rdtsc();                                           \
-    __auto_type r = enif_realloc_binary(a ,b);                             \
-    uint64_t dt = __rdtsc() - t0;                                       \
-    if (dt > 23000) {                                     \
-      fprintf(stderr, "%s call to enif_realloc_binary(%p, %zu)" \
-              " too slow: %lu\n", __FUNCTION__, a, b, dt);              \
-    }                                                                   \
-    r; })
-
-
 #define BIN_INC_SIZE 32768
 
 #define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
